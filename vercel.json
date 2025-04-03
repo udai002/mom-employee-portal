@@ -1,17 +1,14 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "index.jsx",
-        "use": "@now/node"
-      }
-    ],
-    "routes": [
-      {
-       
-        "src": "/(.*)",
-     
-        "dest": "index.jsx"
-      }
-    ]
+  "builds": [
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
 }
