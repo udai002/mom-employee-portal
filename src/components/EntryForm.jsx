@@ -98,7 +98,7 @@ const EntryForm = ({setOpenModal , teammate , setTeammate}) => {
                         </div>
                     </div>
                     <div className='mb-4'>
-                        <label htmlFor="">isAdmin</label> 
+                        <label htmlFor="">Admin</label> 
                     <div className="flex items-center space-x-4">
                         <div className="flex items-center">
                             <input
