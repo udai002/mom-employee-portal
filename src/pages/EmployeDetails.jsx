@@ -36,7 +36,7 @@ const EmployeDetails = () => {
     if (user) {
       console.log("this is running")
       const dateFormate = new Date(selectedDateData).toISOString().split("T")[0]
-      const response = await fetch(`http://localhost:3000/api/emplyee/${id}/${dateFormate}`)
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/emplyee/${id}/${dateFormate}`)
       console.log(dateFormate)
       if (response.ok) {
         setApiStatus(apistatusList.sucess)
