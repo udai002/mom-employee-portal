@@ -30,7 +30,7 @@ const UserForm = () => {
   const getUserData = async ()=>{
     console.log(user)
     const formatedDate = new Date().toISOString().split("T")[0]
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/emplyee/${user.userId}/${formatedDate}`)
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/emplyee/${user.userId}/${formatedDate}`)
     if(response.ok){
       setIsEditable(true)
       const data = await response.json()
@@ -54,7 +54,7 @@ const UserForm = () => {
 
   // posting user data 
   const postUserData = async () => {
-    const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/employeeDetails/${user.userId}`;
+    const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/api/employeeDetails/${user.userId}`;
     const options = {
       method: "POST",
       headers: {
