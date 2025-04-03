@@ -67,7 +67,7 @@ const AdminPortal = () => {
         'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1lbGVsZTEiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE3NDM0MTc4NDZ9.-YEG-oCMCaYjDzWBSnmtags83RxH27RvCN9XVaOOK9g"
       }
     }
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/${id}`  ,options)
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/${id}`  ,options)
     console.log(response)
     const updatedTeammates = teammate.filter(item=>item._id!=id)
     setTeammate(updatedTeammates)
