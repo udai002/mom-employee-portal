@@ -83,7 +83,7 @@ const UserForm = () => {
 
   const updateData = async ()=>{
     console.log("this is " ,employeeId)
-    const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/employee/${employeeId}`;
+    const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/api/employee/${employeeId}`;
     const options = {
       method: "PUT",
       headers: {

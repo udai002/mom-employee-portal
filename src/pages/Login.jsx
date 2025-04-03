@@ -39,7 +39,7 @@ const Login = () => {
         body:JSON.stringify({username , password})
       }
 
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/login` , options)
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/login` , options)
       if(response.ok){
         setLoginError(false)
         const data = await response.json()

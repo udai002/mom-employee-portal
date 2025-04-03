@@ -21,7 +21,7 @@ const EntryForm = ({setOpenModal , teammate , setTeammate}) => {
             body:JSON.stringify({username , email , password , isAdmin , gender})
         }
         
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user` , options)
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user` , options)
         if(response.ok){
             const data = await response.json()
             const newData = data.data
