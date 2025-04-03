@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import UserCard from '../components/UserCard'
 import EntryForm from '../components/EntryForm'
 import CustomeLoader from '../components/CustomeLoader'
+import { UserContext } from '../context/UserContext'
+import { useNavigate } from 'react-router-dom'
 
 const apiStatusList = {
   initial: "INITIAL",
@@ -22,6 +24,12 @@ const AdminPortal = () => {
   useEffect(() => {
     getUsers()
   }, [])
+
+  const {user , error } = useContext(UserContext)
+
+
+ console.log(user)
+ const navigate =  useNavigate()
 
 
   //user created
@@ -45,6 +53,11 @@ const AdminPortal = () => {
     }
 
   }
+
+  if(user && !user.isAdmin){
+    navigate('/user')
+  }
+
 
   //delete user
   const deleteUser = async(id)=>{
@@ -88,7 +101,13 @@ const AdminPortal = () => {
       </div>}
       <div>
         <h1 className='font-bold text-2xl text-center mt-5'>Hi There, Here is your team</h1>
+        <div className='pl-30 flex items-center flex-wrap'>
+          <div className='flex items-center mt-10'>
+          {/* <span className='mr-2 font-semibold'>Search</span> */}
+        <input type='text' className='mr-4 rounded-full border-2 border-gray-400 py-1 px-4 outline-none' value = {search} placeholder='search..' onChange={(e)=>setSearch(e.target.value)} />
+          </div>
         <button className='absolute right-10 bg-green-300 px-4 py-2 rounded-xl font-semibold' onClick={() => setOpenModal(true)}>Add Employee</button>
+        </div>
       </div>
       <div className='flex flex-row flex-wrap p-20'>
         {filteredTeammates.map(item => <UserCard id={item._id} setActiveDeleteId={setActiveDeleteId} key={item._id} name={item.username} gender={item.gender} />)}

@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
+import { UserContext } from '../context/UserContext'
 
 const UserForm = () => {
 
@@ -12,24 +13,101 @@ const UserForm = () => {
   const [reason, setReason] = useState("")
   const [innovativeIdea, setInnovativeIdea] = useState("")
   const [isChecked, setIsChecked] = useState(false)
+  const [isEdit , setIsEdit] = useState(false)
 
-  const apiUrl = "http://localhost:3000/api/employeeDetails/67ea649dd6b54e4sdfdf58d66e6efs";
+  const [isEditable , setIsEditable] = useState(false)
+  const [employeeId , setEmployeeId] = useState(null)
+
+  const {user} = useContext(UserContext)
+
+  
 
   const countWords = (text) => {
     return text.trim().split(/\s+/).filter(Boolean).length;
   };
 
+  //getting user data 
+  const getUserData = async ()=>{
+    console.log(user)
+    const formatedDate = new Date().toISOString().split("T")[0]
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/emplyee/${user.userId}/${formatedDate}`)
+    if(response.ok){
+      setIsEditable(true)
+      const data = await response.json()
+      console.log(data)
+      setTechincalDesc(data.technicalDesc)
+      setNonTechincalDesc(data.nonTechnicalDesc)
+      setReview(data.review)
+      setExtraCarricural(data.extraCarricular)
+      setEvents(data.events)
+      setPosted_linkedin(data.posted_linkedin)
+      setIsEdit(data.isEdit)
+      setInnovativeIdea(data.innovativeIdea)
+      setEmployeeId(data._id)
+    }
+  }
+
+  useEffect(()=>{
+    if(user)getUserData()
+  } , [user, isEdit] )
+
+
+  // posting user data 
   const postUserData = async () => {
+    const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/employeeDetails/${user.userId}`;
     const options = {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ userId: 100, technicalDesc: techincalDesc, nonTechnicalDesc: nonTechincalDesc,innovativeIdea:innovativeIdea, review, events, extraCarricular: extraCurricular, posted_linkedin })
+      body: JSON.stringify({ technicalDesc: techincalDesc, nonTechnicalDesc: nonTechincalDesc,innovativeIdea:innovativeIdea, review, events, extraCarricular: extraCurricular, posted_linkedin })
     }
 
     const response = await fetch(apiUrl, options);
     console.log(response)
+    if(response.ok){
+      setIsEditable(true)
+      const data = await response.json()
+      setTechincalDesc(data.technicalDesc)
+      setNonTechincalDesc(data.nonTechnicalDesc)
+      setReview(data.review)
+      setExtraCarricural(data.extraCarricular)
+      setEvents(data.events)
+      setPosted_linkedin(data.posted_linkedin)
+      setIsEdit(data.isEdit)
+      setInnovativeIdea(data.innovativeIdea)
+      setEmployeeId(data._id)
+
+    }
+  }
+
+  const updateData = async ()=>{
+    console.log("this is " ,employeeId)
+    const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/employee/${employeeId}`;
+    const options = {
+      method: "PUT",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ technicalDesc: techincalDesc, nonTechnicalDesc: nonTechincalDesc,innovativeIdea:innovativeIdea, review, events, extraCarricular: extraCurricular, posted_linkedin })
+    }
+
+    const response = await fetch(apiUrl, options);
+    console.log(response)
+    if(response.ok){
+      setIsEditable(true)
+      
+      const data = await response.json()
+      setTechincalDesc(data.technicalDesc)
+      setNonTechincalDesc(data.nonTechnicalDesc)
+      setReview(data.review)
+      setExtraCarricural(data.extraCarricular)
+      setEvents(data.events)
+      setPosted_linkedin(data.posted_linkedin)
+      setIsEdit(data.isEdit)
+      setInnovativeIdea(data.innovativeIdea)
+    }
+    
   }
 
   const onFormSubmit = (e) => {
@@ -56,9 +134,32 @@ const UserForm = () => {
       <Navbar />
       <div className='w-full'>
         <div className="flex  lg:flex-nowrap flex-wrap gap-10 max-w-6xl mx-auto my-16 p-6">
-          <div className="w-1/2 w-full md:w-1/2 bg-gray-100 p-6 rounded-lg shadow-lg">
+          <div className="w-1/2 md:w-1/2 bg-gray-100 p-6 rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              No Submitted Data
+            <div className='p-3'>
+      <h1 className='font-semibold mb-1'>Technical Learning</h1>
+      <p className='text-sm'>{techincalDesc}</p>
+    </div>
+      <div className='p-3'>
+        <h1 className='font-semibold mb-1'>Non Technical Learning</h1>
+        <p className='text-sm'>{nonTechincalDesc}</p>
+      </div>
+      <div className='p-3'>
+        <h1 className='font-semibold mb-1'>Remark</h1>
+        <p className='text-sm'>{review}</p>
+      </div>
+      <div className='p-3'>
+        <h1 className='font-semibold mb-1'>Extra Curricular</h1>
+        <p className='text-sm'>{extraCurricular}</p>
+      </div>
+      <div className='p-3'>
+        <h1 className='font-semibold mb-1'>Events</h1>
+        <p className='text-sm'>{events}</p>
+      </div>
+      <div className='p-3'>
+        <h1 className='font-semibold mb-1'>Post in Linkedin</h1>
+        <p className='text-sm'>{posted_linkedin}</p>
+      </div>
             </h2>
 
           </div>
@@ -223,23 +324,22 @@ const UserForm = () => {
               </div>
 
                {/* Update Button */}
-               <button
-                type="submit"
-                className='bg-red-400 px-4 py-1 rounded-md'
-                
-
+               {isEditable && <button
+                className={`${isEdit?"bg-gray-300":"bg-red-400"} px-4 py-1 rounded-md`}
+                disabled = {isEdit}
+                onClick={()=>updateData()}
               >
                 Update
-              </button>
+              </button>}
 
               {/* Submit Button */}
-              <button
+              {!isEditable && <button
                 type="submit"
                 className='bg-green-400 px-4 py-1 rounded-md'
-
+                onClick={()=>postUserData()}
               >
                 Submit
-              </button>
+              </button>}
             </form>
             )} 
             <form>

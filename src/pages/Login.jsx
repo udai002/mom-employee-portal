@@ -1,28 +1,36 @@
 import { jwtDecode } from 'jwt-decode'
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState  , useRef} from 'react'
 import { useNavigate } from 'react-router-dom'
+import { UserContext } from '../context/UserContext'
 
 const Login = () => {
+
+  const navigate = useNavigate()
+
+  if(localStorage.getItem("jwt_token")){
+    const jwtToken = localStorage.getItem("jwt_token")
+    const decoded = jwtDecode(jwtToken)
+             if(decoded.isAdmin){
+               navigate('/admin')
+             }else{
+               navigate('/user')
+             }
+  }
+
+  const loginRef = useRef(null)
 
     const [username  , setUsername] = useState("")
     const [password  , setPassword] = useState("")
     const [errorMsg , setErrorMsg] = useState(false)
+    const [loginError, setLoginError] = useState(false)
 
-    const navigate = useNavigate();
 
-    const setLoginToken = (token)=>{
-      localStorage.setItem("jwt_token" , token)
-      const LocalToken = localStorage.getItem("jwt_token")
-      const decode = jwtDecode(LocalToken)
-      if(decode.isAdmin){
-        navigate('/admin')
-      }else{
-        navigate('/user')
-      }
 
-    }
+    const {setLogin} = useContext(UserContext)
 
-    const loginUser = async ()=>{
+  const loginUser = async ()=>{
+    loginRef.current.textContent = "Loading..."
+    loginRef.current.disabled = true
       const options = {
         method:"POST",
         headers:{
@@ -33,16 +41,27 @@ const Login = () => {
 
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/login` , options)
       if(response.ok){
+        setLoginError(false)
         const data = await response.json()
         console.log(data.jwtToken)
-        setLoginToken(data.jwtToken)
+        const decoded = jwtDecode(data.jwtToken)
+        setLogin(data.jwtToken , decoded)
+             if(decoded.isAdmin){
+               navigate('/admin')
+             }else{
+               navigate('/user')
+             }
       }else{
-
+        loginRef.current.textContent = "Login"
+        loginRef.current.disabled = false
+        setLoginError(true)
       }
     }
+    
 
     const handleLogin = (e)=>{
       e.preventDefault()
+      
       if(!username || !password){
         setErrorMsg(true)
       }else{
@@ -66,7 +85,8 @@ const Login = () => {
                 </div>
                 <div>
                  {errorMsg && <p className='text-red-500 mt-3 '>All Fields are mandatory</p>} 
-                    <button className='mt-6 w-full bg-[#00a99d] py-1 px-2 rounded-md' type='submit'>Login</button>
+                 {loginError && <p className='text-red-500 mt-3 '>Invalid Credientials</p>} 
+                    <button ref={loginRef} className='mt-6 w-full bg-[#00a99d] py-1 px-2 rounded-md' type='submit'>Login</button>
                 </div>
             </form>
         </div>

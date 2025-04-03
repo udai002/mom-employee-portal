@@ -132,7 +132,7 @@ const EntryForm = ({setOpenModal , teammate , setTeammate}) => {
                     </div>
                     </div>
                     {errorMsg && <p className='text-red-500 mb-4'>All Fields are Mandatory</p>}
-                    <button className='bg-green-300 px-4 py-2 w-full' type='submit'>submmit</button>
+                    <button className='bg-green-300 px-4 py-2 w-full' type='submit'>Submit</button>
                     <button className='bg-red-300 px-4 py-2 w-full mt-3' onClick={()=>setOpenModal(false)}>Cancel</button>
                 </form>
             </div>
