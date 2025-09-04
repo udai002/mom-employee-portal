@@ -7,8 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const Navbar = ({search, setSearch}) => {
 
   const navigate = useNavigate();
-  const {user , error} = useContext(UserContext)
-  console.log(user)
+  const {user , error , jwtToken} = useContext(UserContext)
 
     useEffect(()=>{
     } , [user])
@@ -36,7 +35,7 @@ const Navbar = ({search, setSearch}) => {
             </div>
             <button className='bg-red-400 px-4 py-1 rounded-md' onClick={()=>logout()}>Logout</button>
         </div>
-      </div>
+      </div>   
     </div>
   )
 }

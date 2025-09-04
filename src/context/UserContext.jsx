@@ -11,9 +11,11 @@ const UserProvider = ({children})=>{
 
     const [user  , setUser] = useState(null);
     const [error , setError] = useState(false);
+    const [jwtToken , setJwtToken] = useState(null)
 
     useEffect(()=>{
         const token = localStorage.getItem("jwt_token")
+        setJwtToken(token)
         if(token){
            const decoded =  jwtDecode(token)
             setUser(decoded)
@@ -27,7 +29,7 @@ const UserProvider = ({children})=>{
     }
     
 
-    return <UserContext.Provider value={{user , error , setLogin }}>
+    return <UserContext.Provider value={{user , error , setLogin , jwtToken }}>
         {children}
     </UserContext.Provider>
 

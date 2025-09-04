@@ -1,14 +1,18 @@
-
-import React, { useState } from 'react'
+import { jwtDecode } from 'jwt-decode'
+import React, { useContext, useState } from 'react'
 import Navbar from '../components/Navbar'
+import { UserContext } from '../context/UserContext'
+import PostLeaves from '../components/PostLeaves'
 
 const LeaveForm = () => {
   const [formData, setFormData] = useState({
     reason: '',
     from: '',
     to: '',
-    LeaveType: ''
+    leaveType: ''
   })
+
+  const {jwtToken} = useContext(UserContext)
 
   function handleChange(e) {
     const { name, value } = e.target
@@ -21,14 +25,18 @@ const LeaveForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     console.log("Form Data:", formData)
-
+    console.log(jwtToken)
+    const userDetails = jwtDecode(jwtToken)
+    console.log(userDetails)
+    
     const apiurl =` ${import.meta.env.VITE_BACKEND_URL}/api/leave/apply`
     const options = {
       method: "POST",
       headers: {
+        'Authorization':`Bearer ${jwtToken}`,
         'content-type': "application/json"
       },
-      body: JSON.stringify({ formData })
+      body: JSON.stringify({ name:userDetails.username , employeeId:userDetails.userId , ...formData })
     }
     const response = await fetch(apiurl, options)
 
@@ -51,13 +59,7 @@ const LeaveForm = () => {
         </p>
         
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-          <input
-            placeholder="Reason"
-            name="reason"
-            value={formData.reason}
-            onChange={handleChange}
-            className="border rounded-lg p-3  h-24 text-center"
-          />
+        
 
            <div className="flex gap-4">
             <div className="flex flex-col flex-1">
@@ -83,8 +85,10 @@ const LeaveForm = () => {
             </div>
           </div>
 
+
+
           <select
-            name="LeaveType"
+            name="leaveType"
             value={formData.LeaveType}
             onChange={handleChange}
             className="border rounded-lg p-3"
@@ -95,6 +99,14 @@ const LeaveForm = () => {
             <option value="Others">Others</option>
           </select>
 
+            <input
+            placeholder="Reason"
+            name="reason"
+            value={formData.reason}
+            onChange={handleChange}
+            className="border rounded-lg p-3  h-24 "
+          />
+
           <button
             type="submit"
             className="bg-[#3f9b9564] text-white py-3 rounded-lg font-semibold  hover:bg-[#00a99d] "
@@ -104,6 +116,7 @@ const LeaveForm = () => {
         </form>
       </div>
     </div>
+      <PostLeaves/>
    </>
   )
 }
