@@ -12,6 +12,10 @@ const LeaveForm = () => {
     leaveType: ''
   })
 
+  
+
+  const [fieldError , setFieldError] = useState(false)
+
   const {jwtToken} = useContext(UserContext)
 
   function handleChange(e) {
@@ -28,8 +32,12 @@ const LeaveForm = () => {
     console.log(jwtToken)
     const userDetails = jwtDecode(jwtToken)
     console.log(userDetails)
-    
-    const apiurl =` ${import.meta.env.VITE_BACKEND_URL}/api/leave/apply`
+    const valuesOfFormData = Object.values(formData).some(item=>item==='')
+    if(valuesOfFormData){
+      setFieldError(true)
+    }else{
+      setFieldError(false)
+       const apiurl =` ${import.meta.env.VITE_BACKEND_URL}/api/leave/apply`
     const options = {
       method: "POST",
       headers: {
@@ -45,6 +53,8 @@ const LeaveForm = () => {
     } else {
       console.log("Unable to post data to backend")
     }
+    }
+   
   }
 
   return (
@@ -99,17 +109,17 @@ const LeaveForm = () => {
             <option value="Others">Others</option>
           </select>
 
-            <input
+            <textarea
             placeholder="Reason"
             name="reason"
             value={formData.reason}
             onChange={handleChange}
             className="border rounded-lg p-3  h-24 "
           />
-
+          {fieldError && <p className='text-red-400'>All fields are mandatory</p>}
           <button
             type="submit"
-            className="bg-[#3f9b9564] text-white py-3 rounded-lg font-semibold  hover:bg-[#00a99d] "
+            className="bg-[#00a99d] text-white py-3 rounded-lg font-semibold  hover:bg-[#2a9992] "
           >
             Submit
           </button>
