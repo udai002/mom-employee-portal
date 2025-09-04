@@ -10,6 +10,7 @@ import AdminPortal from './pages/AdminPortal'
 import {UserProvider} from './context/UserContext'
 import ProtectedRoute from './components/protectedRoute.'
 import EditEmployee from './pages/EditEmployee'
+import LeaveForm from './pages/LeaveForm'
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/user" Component={UserForm} />
         <Route path='/admin' Component={AdminPortal} />
         <Route path='/editEmployee' Component={EditEmployee} />
+        <Route path='/leaveform' Component={LeaveForm}/>
       </Routes>
       </BrowserRouter>
     </UserProvider>
