@@ -130,8 +130,9 @@ const LeaveForm = () => {
         </form>
 
       </div>
-      <PostLeaves />
         </div>
+              <PostLeaves />
+
     </>
   );
 };
