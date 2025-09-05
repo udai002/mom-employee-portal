@@ -70,38 +70,6 @@ function Mangemployee() {
   
 
   const columns = [
-    {
-      id: "select",
-      header: (
-        <input
-          type="checkbox"
-          className="w-5 h-5 rounded border-2 border-[#00a99d] peer-checked:bg-[#e0f7f5] flex items-center justify-center"
-          onChange={(e) => {
-            if (e.target.checked) {
-              setSelectedRows(data.map((row) => row._id));
-            } else {
-              setSelectedRows([]);
-            }
-          }}
-          checked={data.length > 0 && selectedRows.length === data.length}
-        />
-      ),
-      cell: (row) => (
-        <input
-          type="checkbox"
-          checked={selectedRows.includes(row._id)}
-          className="w-5 h-5 rounded border-2 border-[#00a99d] peer-checked:bg-[#e0f7f5] flex items-center justify-center"
-          onChange={(e) => {
-            if (e.target.checked) {
-              setSelectedRows([...selectedRows, row._id]);
-            } else {
-              setSelectedRows(selectedRows.filter((id) => id !== row._id));
-            }
-          }}
-        />
-      ),
-    },
-
     { id: "leaveType", header: "Leave Type" },
     {
       id: "reason",
@@ -184,7 +152,7 @@ function Mangemployee() {
       </div>
 
       <div className="flex justify-between px-5 py-3">
-        <p>Total {totalResponses} Responses</p>
+        {/* <p>Total {totalResponses} Responses</p> */}
         {/* <p>No filters applied</p>
         <button
           onClick={handleCheckboxDelete}
