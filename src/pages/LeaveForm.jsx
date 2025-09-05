@@ -5,14 +5,13 @@ import { UserContext } from "../context/UserContext";
 import PostLeaves from "../components/PostLeaves";
 
 const LeaveForm = () => {
+
   const [formData, setFormData] = useState({
     reason: "",
     from: "",
     to: "",
     leaveType: "",
   });
-
-
 
   const [fieldError , setFieldError] = useState(false)
 
@@ -32,7 +31,7 @@ const LeaveForm = () => {
     console.log("Form Data:", formData)
     console.log(jwtToken)
     const userDetails = jwtDecode(jwtToken)
-    console.log(userDetails)
+    console.log("from the handle submit button",userDetails)
     const valuesOfFormData = Object.values(formData).some(item=>item==='')
     if(valuesOfFormData){
       setFieldError(true)
@@ -49,6 +48,7 @@ const LeaveForm = () => {
       body: JSON.stringify({
         name: userDetails.username,
         employeeId: userDetails.userId,
+        email:userDetails.email,
         ...formData,
       }),
     };

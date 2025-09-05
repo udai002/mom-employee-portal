@@ -38,6 +38,7 @@ function Mangemployee() {
             }
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/leavebyuser` , options)
             const data = await response.json()
+            
             setData(data.leaves)
         }catch(error){
             console.log(error)
