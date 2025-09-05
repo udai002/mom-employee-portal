@@ -3,6 +3,7 @@ import React, { useContext, useState } from "react";
 import Navbar from "../components/Navbar";
 import { UserContext } from "../context/UserContext";
 import PostLeaves from "../components/PostLeaves";
+import toast from "react-hot-toast";
 
 const LeaveForm = () => {
   const [formData, setFormData] = useState({
@@ -45,6 +46,7 @@ const LeaveForm = () => {
       headers: {
         Authorization: `Bearer ${jwtToken}`,
         "content-type": "application/json",
+        
       },
       body: JSON.stringify({
         name: userDetails.username,
@@ -56,8 +58,10 @@ const LeaveForm = () => {
 
     if (response.ok) {
       console.log("Successfully posted data to backend");
+      toast.success("submited successfully")
     } else {
       console.log("Unable to post data to backend");
+      toast.error("Unable to post data to backend")
     }
 
     }

@@ -11,6 +11,7 @@ import {UserProvider} from './context/UserContext'
 import ProtectedRoute from './components/protectedRoute.'
 import EditEmployee from './pages/EditEmployee'
 import LeaveForm from './pages/LeaveForm'
+import { Toaster } from 'react-hot-toast'
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         <Route path='/editEmployee' Component={EditEmployee} />
         <Route path='/leaveform' Component={LeaveForm}/>
       </Routes>
+      <Toaster/>
       </BrowserRouter>
     </UserProvider>
   )
