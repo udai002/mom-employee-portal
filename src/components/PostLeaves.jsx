@@ -47,7 +47,6 @@ function Mangemployee() {
             }
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/leavebyuser?page=${page}&limit=${limit}` , options)
             const data = await response.json()
-            console.log("this is data" , data)
             setData(data.leaves)
             setTotalPages(Math.ceil(data.leaves.length/limit))
         }catch(error){
